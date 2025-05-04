@@ -21,34 +21,39 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS artista_musica(
       id_artista INTEGER,
       id_musica INTEGER,
+      PRIMARY KEY (id_artista, id_musica),
       FOREIGN KEY (id_artista) REFERENCES artistas (id_artista),
       FOREIGN KEY (id_musica) REFERENCES musicas (id_musica)
     );
   `);
+
   db.run(`
     CREATE TABLE IF NOT EXISTS programa(
       id_programa INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL
     );
   `);
+
   db.run(`
     CREATE TABLE IF NOT EXISTS ouvinte(
       celular INTEGER PRIMARY KEY,
-      nome INTEGER,
+      nome TEXT NOT NULL,
       bairro TEXT NOT NULL
     );
   `);
+
   db.run(`
     CREATE TABLE IF NOT EXISTS pedido(
-      dt_hr INTEGER PRIMARY KEY,
+      id_pedido INTEGER PRIMARY KEY AUTOINCREMENT,
+      horario TEXT,
       id_musica INTEGER,
       id_programa INTEGER,
-      id_ouvinte INTEGER,
+      celular INTEGER,
       FOREIGN KEY (id_musica) REFERENCES musicas (id_musica),
-      FOREIGN KEY (id_programa) REFERENCES programa (id_programa)
+      FOREIGN KEY (id_programa) REFERENCES programa (id_programa),
+      FOREIGN KEY (celular) REFERENCES ouvinte (celular)
     );
   `);
 });
-db.close();
 
 module.exports = db
